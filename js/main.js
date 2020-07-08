@@ -24,6 +24,10 @@
     var camisas=document.getElementById('camisa_evento');
     var etiquetas=document.getElementById('etiqueta');
 
+    botonRegistro.disabled = true;
+
+    if(document.getElementById('calcular')){
+
     calcular.addEventListener('click', calcularMontos);
     pase_dia.addEventListener('blur', mostrarDias);
     pase_2dias.addEventListener('blur', mostrarDias);
@@ -96,7 +100,8 @@
         }
 
         suma.innerHTML= '$'+ totalPagar.toFixed(2);
-       
+        botonRegistro.disabled= false;
+        document.getElementById('total_pedido').value= totalPagar;
        }
     }
     function mostrarDias(){
@@ -123,13 +128,37 @@
                 mostrar.style.display='block';
         }
     }
-    
+}
     });// dom content loaded
 })();
 
 
 $(function(){
-//programa de conferencia
+    //programa de conferencia
+
+    //Aqui pondria el lettering si tan solo me gustara
+
+    //Menu fijo
+    //para que se mantenga en nav en el scroll
+    var windowheigh=$(window).height();
+    var barraAltura=$('.barra').innerHeight();
+   
+    $(window).scroll(function(){
+        var scroll=$(window).scrollTop();
+        if(scroll > windowheigh){
+            $('.barra').addClass('fixed');
+            $('body').css({'margin-top': barraAltura+'px'});
+        } else{
+            $('.barra').removeClass('fixed');
+            $('body').css({'margin-top': '0px'});
+        }
+    });
+    
+    //Menu responsive
+
+    $('.menu-mobil').on('click', function(){
+        $('.navegacion-principal').slideToggle();
+    });
 
     //
     $('.programa-evento .info-curso:first').show();
@@ -143,6 +172,22 @@ $(function(){
 
         return false;        
     });
+
+    //Animaciones para los numeros
+
+    $('.resumen-evento li:nth-child(1) p').animateNumber({number:6},1200);
+    $('.resumen-evento li:nth-child(2) p').animateNumber({number:15},1200);
+    $('.resumen-evento li:nth-child(3) p').animateNumber({number:3},1500);
+    $('.resumen-evento li:nth-child(4) p').animateNumber({number:9},1500);
+
+
+    $('.cuenta-regresiva').countdown('2020/6/19 00:00:00', function(event){
+        $('#dias').html(event.strftime('%D'));
+        $('#horas').html(event.strftime('%H'));
+        $('#minutos').html(event.strftime('%M'));
+        $('#segundos').html(event.strftime('%S'));
+    })
+
     var map = L.map('mapa').setView([-27.489405, -58.789837], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
